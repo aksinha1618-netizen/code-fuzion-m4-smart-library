@@ -7,7 +7,7 @@ Beginner-friendly hackathon prototype: plain HTML/CSS/JavaScript in the browser,
 - Three floors with 150 seats each (450 seats total).
 - Shared bookings stored in SQLite. A database constraint and transaction prevent two users taking the same active seat.
 - Live seat updates over Server-Sent Events; clients refresh immediately when a seat changes.
-- Check-in against a fixed seat QR, a 20-minute break timer, and automatic seat release when the break ends.
+- Check-in against a fixed seat QR, a 20-minute break timer, early return that keeps the booking, and automatic seat release when the break ends.
 - Admin overview showing booking counts, peak booking hours in IST, and most-booked seats.
 - One web server serves both the page and its API, so there is no CORS setup or separate frontend build.
 
@@ -30,7 +30,7 @@ The database file `library.db` is created the first time the server starts. Stop
 
 1. Open the site in two browsers. Book the same seat from both in quick succession: only one should succeed, and the other map should update.
 2. After booking, click **Show this seat's QR (demo)**. That button displays the seat label code. To demo check-in on one computer, print that QR (or show it on a separate screen), then use the camera scanner in the same browser that made the booking. Camera access needs HTTPS or `localhost` and permission.
-3. Click **Start 20-minute break**. Explain that the server stores the deadline and releases the seat automatically when it expires, even if the student refreshes the page.
+3. Click **Start 20-minute break**. The **End break early (keep seat)** button clears the timer if the student returns early. Otherwise, explain that the server stores the deadline and releases the seat automatically when it expires, even if the student refreshes the page.
 4. Scroll to **Admin Overview** to show peak hours and the most-booked seats. These rankings become useful as bookings accumulate.
 
 For the actual library, print a fixed QR label for every seat. The seat map updates across users, but this prototype has no login; the browser that made the booking is the one that can check it in. The page's demo button produces the seat code so a label can be printed for the demo.

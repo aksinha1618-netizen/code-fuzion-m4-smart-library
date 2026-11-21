@@ -109,7 +109,10 @@ function renderBooking() {
   if (myBooking.on_break) {
     const timerHeading = document.createElement("h3"); timerHeading.textContent = "Break timer";
     const timer = document.createElement("p"); timer.id = "breakCountdown"; timer.className = "break-countdown";
-    details.append(timerHeading, timer);
+    const endBreakButton = document.createElement("button");
+    endBreakButton.textContent = "End break early (keep seat)";
+    endBreakButton.addEventListener("click", endBreakEarly);
+    details.append(timerHeading, timer, endBreakButton);
     startBreakCountdown();
   } else if (breakInterval) {
     clearInterval(breakInterval); breakInterval = null;
@@ -140,6 +143,11 @@ function displaySeatQr() {
 
 async function startBreak() {
   try { await api("/api/break", { userId }); await refreshState(); }
+  catch (error) { notifyError(error); }
+}
+
+async function endBreakEarly() {
+  try { await api("/api/break/cancel", { userId }); await refreshState(); }
   catch (error) { notifyError(error); }
 }
 

@@ -214,7 +214,7 @@ class Handler(SimpleHTTPRequestHandler):
         except (ValueError, json.JSONDecodeError):
             return error(self, 400, "Invalid JSON request")
         user_id = str(data.get("userId", ""))[:80]
-        if path in ("/api/book", "/api/cancel", "/api/checkin", "/api/break") and not user_id:
+        if path in ("/api/book", "/api/cancel", "/api/checkin", "/api/break", "/api/break/cancel") and not user_id:
             return error(self, 400, "A browser user id is required")
         try:
             with database() as db:
@@ -251,6 +251,12 @@ class Handler(SimpleHTTPRequestHandler):
                         return error(self, 409, "Check in first; an active break timer may not already exist")
                     db.execute("""UPDATE bookings SET on_break=1,break_ends_at=?
                         WHERE user_id=? AND status='active'""", (time.time() + 20 * 60, user_id))
+                elif path == "/api/break/cancel":
+                    cur = db.execute("""UPDATE bookings SET on_break=0,break_ends_at=NULL
+                        WHERE user_id=? AND status='active' AND on_break=1""", (user_id,))
+                    if not cur.rowcount:
+                        db.execute("ROLLBACK")
+                        return error(self, 409, "No break timer is active")
                 else:
                     db.execute("ROLLBACK")
                     return error(self, 404, "API route not found")
