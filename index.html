@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#142d4e">
+  <title>Smart Library Seat Finder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo"><span>SL</span> Smart Library</div>
+    <nav aria-label="Main navigation">
+      <a href="#dashboard">Dashboard</a>
+      <a href="#seats">Find Seats</a>
+      <a href="#booking">My Booking</a>
+      <a href="#admin">Admin</a>
+    </nav>
+    <div class="profile">Student</div>
+  </header>
+
+  <main class="container" id="dashboard">
+    <section class="welcome">
+      <div>
+        <p class="small-heading">STUDENT DASHBOARD</p>
+        <h1>Find your perfect study seat.</h1>
+        <p class="description">See live availability, book a seat and check in with the QR code placed at that seat.</p>
+      </div>
+      <div class="welcome-icon" aria-hidden="true">📚</div>
+    </section>
+
+    <section class="stats" aria-label="Seat statistics">
+      <div class="stat-card"><p>Total Seats · all floors</p><h2 id="totalSeats">450</h2></div>
+      <div class="stat-card"><p>Available on this floor</p><h2 id="availableSeats">--</h2></div>
+      <div class="stat-card"><p>Occupied on this floor</p><h2 id="occupiedSeats">--</h2></div>
+    </section>
+
+    <section class="seat-section" id="seats">
+      <div class="section-heading">
+        <div><p class="small-heading">LIVE LIBRARY MAP</p><h2>Find a Seat</h2></div>
+        <span class="live-status" id="liveStatus">● Connecting…</span>
+      </div>
+      <div class="floor-buttons" role="group" aria-label="Choose a floor">
+        <button class="floor-btn active" data-floor="1">Floor 1</button>
+        <button class="floor-btn" data-floor="2">Floor 2</button>
+        <button class="floor-btn" data-floor="3">Floor 3</button>
+      </div>
+      <div class="legend">
+        <span><i class="available"></i> Available</span>
+        <span><i class="occupied"></i> Booked</span>
+        <span><i class="selected"></i> Selected</span>
+      </div>
+      <div class="seat-grid" id="seatGrid" aria-live="polite"></div>
+      <div class="selection-panel">
+        <div><p>Selected Seat</p><h3 id="selectedSeat">None</h3></div>
+        <button id="bookButton" disabled>Book Selected Seat</button>
+      </div>
+      <p class="hint">The map refreshes automatically when another student books or frees a seat.</p>
+    </section>
+
+    <section class="booking-section" id="booking">
+      <p class="small-heading">YOUR ACTIVITY</p><h2>My Booking</h2>
+      <div class="booking-card" id="bookingDetails"><p>You haven't booked a seat yet.</p></div>
+      <button id="cancelButton" class="cancel-button" hidden>Cancel Booking</button>
+    </section>
+
+    <section class="qr-section" id="qrCheckin">
+      <p class="small-heading">SEAT VERIFICATION</p><h2>Check in at your seat</h2>
+      <p id="checkinStatus">Book a seat first. Scan the QR label placed at that seat.</p>
+      <div id="qrCode" aria-label="Seat QR code"></div>
+      <button id="showSeatQrButton" hidden>Show this seat's QR (demo)</button>
+      <button id="startScannerButton" disabled>Scan seat QR with camera</button>
+      <div id="reader"></div>
+      <p class="hint">For the demo, show the seat QR on one screen and scan it using the booked student's phone.</p>
+    </section>
+
+    <section class="admin-section" id="admin">
+      <p class="small-heading">LIBRARY STAFF</p><h2>Admin Overview</h2>
+      <p>This demo view summarizes booking history for peak hours and frequently booked seats.</p>
+      <div class="admin-stats">
+        <div class="stat-card"><p>Active bookings</p><h2 id="adminActive">--</h2></div>
+        <div class="stat-card"><p>Bookings recorded</p><h2 id="adminHistory">--</h2></div>
+      </div>
+      <div class="admin-columns">
+        <div><h3>Peak booking hours (IST)</h3><ol id="peakHours"><li>Loading…</li></ol></div>
+        <div><h3>Most booked seats</h3><ol id="hoggedSeats"><li>Loading…</li></ol></div>
+      </div>
+      <p class="hint">Prototype note: this admin view is open for the hackathon demo. Add staff login before real library use.</p>
+    </section>
+  </main>
+
+  <footer><p>Smart Library Seat Finder · M4 hackathon prototype</p><p>Live shared bookings powered by SQLite</p></footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script src="app.js"></script>
+</body>
+</html>
